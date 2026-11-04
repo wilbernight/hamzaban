@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "هم‌زبان — ترجمه‌ی فارسی ایمیل",
+  "short_name": "هم‌زبان",
+  "description": "ترجمه‌ی روان ایمیل‌ها از هر زبانی به فارسی، کاملاً آفلاین و روی همین کامپیوتر.",
+  "version": "1.0.1",
+  "author": "Hamzaban",
+  "browser_specific_settings": {
+    "gecko": { "id": "hamzaban@local", "strict_min_version": "128.0" }
+  },
+  "icons": { "32": "icons/icon.svg", "64": "icons/icon.svg" },
+  "background": { "scripts": ["background.js"] },
+  "permissions": [
+    "messagesRead",
+    "messagesModify",
+    "storage",
+    "menus",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "message_display_action": {
+    "default_title": "ترجمه‌ی این ایمیل به فارسی",
+    "default_label": "ترجمه فارسی",
+    "default_icon": "icons/icon.svg"
+  },
+  "options_ui": { "page": "options.html" },
+  "web_accessible_resources": ["fonts/Vazirmatn.woff2"]
+}

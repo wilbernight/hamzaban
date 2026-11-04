@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+.serena/
+.venv/
+venv*/
+dist/
+*.xpi
+*.log
+report-*.md

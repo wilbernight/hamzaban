@@ -1,0 +1,10 @@
+# Fixes saved from the ✎ panel / the Mac app (also in ~/Library/Application Support/Hamzaban/pronounce.txt). Kept in the code so they survive reinstalls.
+پتانسیل = پُتانسیل
+مطالب = مَطالب
+نکته = نُکته
+جوان = جَوان
+قرن = قَرن
+بیت‌المال = بِیت‌المال
+رای‌دهندگان = رَای‌دهندگان
+Laravel = لاراوِل
+وردپرس = وُردپرس

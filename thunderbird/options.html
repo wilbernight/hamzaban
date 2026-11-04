@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>تنظیمات هم‌زبان</title>
+  <style>
+    @font-face { font-family: "HZ Vazirmatn"; src: url("fonts/Vazirmatn.woff2") format("woff2"); font-weight: 100 900; }
+    :root { --bg: #ffffff; --text: #10201d; --muted: #5b6b66; --border: #d7e9e4; --accent: #0f766e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #15201e; --text: #e3f2ee; --muted: #9db4ad; --border: #2a403b; --accent: #5eead4; }
+    }
+    body { margin: 0; padding: 20px 24px; background: var(--bg); color: var(--text);
+      font: 14px/1.9 "HZ Vazirmatn", Tahoma, sans-serif; }
+    h1 { font-size: 17px; margin: 0 0 4px; }
+    p.lead { margin: 0 0 18px; color: var(--muted); }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 12px 0; border-top: 1px solid var(--border); }
+    .row small { display: block; color: var(--muted); font-size: 12.5px; }
+    select, input[type=number] { font: inherit; padding: 4px 8px; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent; color: inherit; }
+    input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+    .status { margin-top: 16px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); }
+    .ok { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <h1>هم‌زبان — ترجمه‌ی فارسی ایمیل</h1>
+  <p class="lead">همه‌چیز روی همین کامپیوتر اجرا می‌شود و متن ایمیل‌ها به هیچ سروری فرستاده نمی‌شود.</p>
+
+  <label class="row">
+    <span>ترجمه‌ی خودکار<small>ایمیل‌های غیرفارسی به‌محض باز شدن ترجمه شوند</small></span>
+    <input type="checkbox" id="autoTranslate">
+  </label>
+  <label class="row">
+    <span>نادیده گرفتن متن نقل‌قول‌شده<small>پاسخ‌های قبلی زیر ایمیل ترجمه نشوند (سریع‌تر)</small></span>
+    <input type="checkbox" id="skipQuotes">
+  </label>
+  <label class="row">
+    <span>مدل ترجمه<small>مدل ۱۲B روان‌تر است؛ مدل ۴B سریع‌تر</small></span>
+    <select id="model">
+      <option value="">TranslateGemma 12B (پیش‌فرض، باکیفیت‌تر)</option>
+      <option value="translategemma:4b">TranslateGemma 4B (سریع‌تر)</option>
+    </select>
+  </label>
+  <label class="row">
+    <span>صدای خواندن ترجمه</span>
+    <select id="voice">
+      <option value="omni_female">VoiceStudio (اُمنی) · بانو — پیشنهادی</option>
+      <option value="omni_male">VoiceStudio (اُمنی) · آقا — پیشنهادی</option>
+      <option value="female_narration">بانو · روایت</option>
+      <option value="male_news">آقا · خبری</option>
+      <option value="male_hello">آقا · صمیمی</option>
+      <option value="aava_female">آوا · بانو، طبیعی‌تر (اگر نصب شده باشد)</option>
+      <option value="aava_male">آوا · آقا، طبیعی‌تر (اگر نصب شده باشد)</option>
+    </select>
+  </label>
+  <label class="row">
+    <span>پورت موتور<small>فقط اگر در config.json عوضش کرده‌اید</small></span>
+    <input type="number" id="port" min="1024" max="65535">
+  </label>
+
+  <div class="status" id="status">در حال بررسی موتور…</div>
+  <script src="options.js"></script>
+</body>
+</html>

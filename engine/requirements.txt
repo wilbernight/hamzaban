@@ -1,0 +1,25 @@
+# web API
+fastapi>=0.115
+uvicorn>=0.30
+httpx>=0.27
+# language detection
+py3langid>=0.3
+# speech recognition (Whisper on Apple Silicon)
+mlx-whisper>=0.4.2
+huggingface_hub>=0.24
+# Persian TTS — ParSiGo / pocket-tts-farsi-v2 on ONNX Runtime (no torch needed by it)
+onnxruntime>=1.19
+numpy>=2
+scipy>=1.11
+soundfile>=0.12
+sentencepiece>=0.2.1
+pedalboard>=0.9
+# English words inside Persian speech: CMU pronouncing dictionary (3.5 MB, offline)
+cmudict>=1.0
+typer>=0.12
+typing_extensions
+# video links: yt-dlp (+ its YouTube challenge solver and JS runtime) and ffmpeg
+yt-dlp[default]>=2026.1.1
+yt-dlp-ejs
+deno
+imageio-ffmpeg>=0.6

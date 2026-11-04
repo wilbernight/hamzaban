@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>هم‌زبان</title>
+  <style>
+    @font-face { font-family: "HZ Vazirmatn"; src: url("fonts/Vazirmatn.woff2") format("woff2"); font-weight: 100 900; }
+    :root {
+      --bg: #ffffff; --surface: #f3f8f7; --text: #10201d; --muted: #5d6e69; --border: #dbe9e5;
+      --accent: #0f766e; --accent-text: #ffffff; --ok: #0f9f6e; --warn: #c27c0e; --err: #c0392b;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111b1a; --surface: #182624; --text: #e4f1ee; --muted: #9bb0aa; --border: #253936;
+        --accent: #2dd4bf; --accent-text: #062522; --ok: #34d399; --warn: #fbbf24; --err: #f87171; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 340px; background: var(--bg); color: var(--text);
+      font: 13.5px/1.8 "HZ Vazirmatn", Tahoma, sans-serif; }
+    header { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; }
+    header img { width: 34px; height: 34px; }
+    h1 { font-size: 15px; margin: 0; line-height: 1.4; }
+    header p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .status { margin: 0 16px; padding: 8px 12px; border-radius: 10px; background: var(--surface);
+      display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; line-height: 1.7; }
+    .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-top: 7px; flex: none; }
+    .status.ok .dot { background: var(--ok); }
+    .status.warn .dot { background: var(--warn); }
+    .status.err .dot { background: var(--err); }
+    section { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: 0; }
+    .primary { width: 100%; border: 0; border-radius: 10px; padding: 10px 12px; cursor: pointer;
+      background: var(--accent); color: var(--accent-text); font: inherit; font-weight: 700; }
+    .primary:disabled { opacity: .45; cursor: default; }
+    .hint { color: var(--muted); font-size: 12px; margin: 6px 2px 0; }
+    .link { display: flex; gap: 6px; }
+    input[type=url] { flex: 1; min-width: 0; font: inherit; direction: ltr; text-align: left;
+      padding: 7px 10px; border-radius: 9px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+    input[type=url]::placeholder { direction: rtl; text-align: right; color: var(--muted); }
+    .secondary { font: inherit; border-radius: 9px; padding: 0 12px; cursor: pointer; white-space: nowrap;
+      border: 1px solid var(--accent); color: var(--accent); background: transparent; font-weight: 600; }
+    label.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 0; }
+    select { font: inherit; padding: 3px 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); max-width: 170px; }
+    input[type=range] { width: 130px; accent-color: var(--accent); }
+    input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--accent); }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    h2 { font-size: 12.5px; color: var(--muted); font-weight: 600; margin: 0 0 4px; }
+    footer { padding: 10px 16px 14px; color: var(--muted); font-size: 11.5px; }
+    details { margin: 4px 0; }
+    summary { cursor: pointer; font-weight: 600; padding: 3px 0; }
+    .lex-form { display: flex; gap: 4px; margin: 6px 0; }
+    .lex-form input { flex: 1; min-width: 0; font: inherit; font-size: 12.5px; padding: 4px 8px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+    .lex-form button { font: inherit; font-size: 12.5px; border-radius: 8px; padding: 0 10px; cursor: pointer;
+      border: 0; background: var(--accent); color: var(--accent-text); font-weight: 700; }
+    .lex-list { list-style: none; margin: 0; padding: 0; max-height: 160px; overflow: auto; font-size: 12.5px; }
+    .lex-list li { display: flex; justify-content: space-between; gap: 8px; padding: 2px 4px; border-radius: 6px; }
+    .lex-list li:nth-child(odd) { background: var(--surface); }
+    .lex-list button { border: 0; background: none; color: var(--err); cursor: pointer; font: inherit; }
+    .lex-empty { color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="">
+    <div><h1>هم‌زبان</h1><p>دوبله‌ی فارسی همزمان، آفلاین روی همین کامپیوتر</p></div>
+  </header>
+  <div class="status" id="status"><span class="dot"></span><span id="status-text">در حال بررسی موتور…</span></div>
+
+  <section>
+    <button class="primary" id="dub-here" disabled>دوبله‌ی ویدیوی همین صفحه</button>
+    <p class="hint" id="here-hint">روی صفحه‌ی ویدیو هم دکمه‌ی «دوبله‌ی فارسی» ظاهر می‌شود.</p>
+  </section>
+
+  <section>
+    <h2>یا لینک ویدیو را بدهید</h2>
+    <form class="link" id="link-form">
+      <input type="url" id="link" placeholder="لینک یوتیوب، ویمئو، …" required>
+      <button class="secondary" type="submit">دوبله کن</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>تنظیمات</h2>
+    <label class="row">صدای دوبله <select id="voice"></select></label>
+    <label class="row">ترجمه‌ی دوبله
+      <select id="quality"><option value="fast">سریع (مدل ۴B)</option><option value="best">دقیق‌تر (مدل ۱۲B)</option></select></label>
+    <label class="row">لحن صدای دوبله
+      <select id="style"><option value="spoken">گفتاری (مثل دوبله‌ی فیلم)</option><option value="written">کتابی (خواندن متن ترجمه)</option></select></label>
+    <label class="row">صدای اصلی ویدیو <input type="range" id="duck" min="0" max="60" step="5"></label>
+    <label class="row">نمایش
+      <select id="mode"><option value="both">دوبله + زیرنویس</option><option value="dub">فقط دوبله</option><option value="subs">فقط زیرنویس</option></select></label>
+    <label class="row">اندازه‌ی زیرنویس <input type="range" id="subScale" min="60" max="200" step="10"></label>
+    <label class="row">ارتفاع زیرنویس <input type="range" id="subLift" min="2" max="45" step="1"></label>
+    <label class="row">اگر دوبله آماده نبود، ویدیو صبر کند <input type="checkbox" id="autoWait"></label>
+  </section>
+  <section>
+    <h2>واژه‌ها و اصطلاح‌های شما</h2>
+    <details id="lex-pronounce">
+      <summary>تلفظ درست (فارسی یا انگلیسی)</summary>
+      <form class="lex-form" data-kind="pronounce">
+        <input name="a" placeholder="کلمه" required><input name="b" placeholder="چطور گفته شود" required>
+        <button type="submit">افزودن</button></form>
+      <ul class="lex-list"></ul>
+    </details>
+    <details id="lex-idioms">
+      <summary>ترجمه‌ی درست اصطلاح‌های انگلیسی</summary>
+      <form class="lex-form" data-kind="idioms">
+        <input name="a" placeholder="عبارت انگلیسی" dir="ltr" required><input name="b" placeholder="ترجمه‌ی فارسی" required>
+        <button type="submit">افزودن</button></form>
+      <ul class="lex-list"></ul>
+    </details>
+    <p class="hint">در دوبله هم با دکمه‌ی ✎ روی ویدیو می‌شود همین جمله را درست کرد.</p>
+  </section>
+  <footer>صدا، متن و ترجمه هیچ‌وقت از این کامپیوتر خارج نمی‌شوند.</footer>
+  <script src="popup.js"></script>
+</body>
+</html>

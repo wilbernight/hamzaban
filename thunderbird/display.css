@@ -1,0 +1,17 @@
+/* Placement of the Hamzaban panels; everything else lives in their shadow roots. */
+#hamzaban-host {
+  display: block;
+  margin: 0 0 4px;
+}
+
+#hamzaban-sel {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  width: min(440px, calc(100vw - 32px));
+  max-height: 55vh;
+  overflow: auto;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
