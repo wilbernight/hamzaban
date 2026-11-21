@@ -13,6 +13,7 @@ import json
 import re
 import sqlite3
 import threading
+import time
 
 from . import glossary, idioms, langs, persian
 
@@ -183,11 +184,22 @@ class Translator:
         timeout = httpx.Timeout(connect=5, read=600, write=60, pool=10)
         self.aclient = httpx.AsyncClient(timeout=timeout)
         self.client = httpx.Client(timeout=timeout)
+        self._en_ok, self._en_checked = False, -1e9
 
     def options(self, model):
-        if model == self.cfg["email_model"]:  # long e-mails
+        if model in (self.cfg["email_model"], self.cfg.get("email_model_en")):  # long e-mails
             return OPTIONS
         return {**OPTIONS, "num_ctx": SMALL_CTX}
+
+    def pick(self, model: str, src: str) -> str:
+        """English text asked of the e-mail model goes to the fine-tuned English model when it is installed."""
+        en = self.cfg.get("email_model_en") or ""
+        if not (en and model == self.cfg["email_model"] and src == "en"):
+            return model
+        now = time.monotonic()
+        if now - self._en_checked > 120:
+            self._en_ok, self._en_checked = bool(self.model_available(en)), now
+        return en if self._en_ok else model
 
     def _payload(self, model, text, src, stream):
         return {"model": model, "stream": stream, "keep_alive": self.cfg["keep_alive"],
@@ -234,14 +246,15 @@ class Translator:
                 if psrc == "fa":
                     psrc = src
                 asked = idioms.plain(piece) if psrc == "en" else piece  # idioms -> plain meaning
-                raw = self.cache.get(model, asked)
+                pm = self.pick(model, psrc)
+                raw = self.cache.get(pm, asked)
                 if raw is None:
                     parts = []
-                    async for d in self._stream_piece(model, asked, psrc):
+                    async for d in self._stream_piece(pm, asked, psrc):
                         parts.append(d)
                         yield {"type": "delta", "text": d}
                     raw = "".join(parts)
-                    self.cache.put(model, asked, raw)
+                    self.cache.put(pm, asked, raw)
                 else:
                     yield {"type": "delta", "text": raw}
                 out = glossary.apply(piece, persian.normalize(raw))
@@ -261,10 +274,11 @@ class Translator:
             if direct:
                 return persian.normalize(direct)
         asked = idioms.plain(text) if (src or "en") == "en" else text  # idioms -> plain meaning
+        src = src or langs.detect(text)
+        model = self.pick(model, src)
         cached = self.cache.get(model, asked)
         if cached is not None:
             return glossary.apply(text, persian.normalize(cached))
-        src = src or langs.detect(text)
         try:
             r = self.client.post(self.url, json=self._payload(model, asked, src, False))
         except httpx.ConnectError as e:

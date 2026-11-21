@@ -83,6 +83,8 @@ class Engine:
             # a 16 GB Mac swap: let it go now, it loads again for the next e-mail
             if self.cfg["email_model"] != model:
                 self.translator.unload(self.cfg["email_model"])
+                if self.cfg.get("email_model_en"):
+                    self.translator.unload(self.cfg["email_model_en"])
             self.translator.translate("Hello.", model, "en")
 
         for fn in (asr, mt):

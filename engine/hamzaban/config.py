@@ -21,6 +21,9 @@ DEFAULTS = {
     "ollama_url": "http://127.0.0.1:11434",
     # TranslateGemma (Google, 2026): translation-tuned Gemma 3, 55 languages
     "email_model": "translategemma:12b",
+    # English e-mails: TranslateGemma 12B fine-tuned (LoRA) on English programming lectures:
+    # more natural Persian, technical terms as «فارسی (english)». Not installed -> email_model.
+    "email_model_en": "translategemma-fa:12b",
     "dub_model": "translategemma:4b",
     "whisper_model": "mlx-community/whisper-large-v3-turbo-q4",  # 4-bit: same speed and words, 1.1 GB less
     "default_voice": "male_news",
