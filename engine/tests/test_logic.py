@@ -940,3 +940,27 @@ class LiveRobustnessTests(unittest.TestCase):
             job.stop()
             self.assertNotEqual(job.status, "error")
             self.assertEqual([job.sents[1].fa, job.sents[2].fa], ["خوب", ""])
+
+
+class EnglishModelPickTests(unittest.TestCase):
+    """English e-mail text goes to the fine-tuned model only when it is installed."""
+
+    def _tr(self, installed):
+        from hamzaban.translator import Translator
+
+        tr = Translator.__new__(Translator)
+        tr.cfg = {"email_model": "big", "dub_model": "small", "email_model_en": "big-fa"}
+        tr._en_ok, tr._en_checked = False, -1e9
+        tr.model_available = lambda m: installed
+        return tr
+
+    def test_english_uses_finetuned(self):
+        self.assertEqual(self._tr(True).pick("big", "en"), "big-fa")
+
+    def test_other_languages_and_dub_unchanged(self):
+        tr = self._tr(True)
+        self.assertEqual(tr.pick("big", "de"), "big")
+        self.assertEqual(tr.pick("small", "en"), "small")
+
+    def test_not_installed_falls_back(self):
+        self.assertEqual(self._tr(False).pick("big", "en"), "big")
